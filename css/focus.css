@@ -1,0 +1,428 @@
+/* ============================================================
+   FocusFlow — Focus Session Styles (focus.css)
+   ============================================================ */
+
+/* ── Focus Page Layout ────────────────────────────────────── */
+.focus-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+/* ── Timer Section ────────────────────────────────────────── */
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+/* ── Mode Selector ────────────────────────────────────────── */
+.mode-selector {
+  display: flex;
+  gap: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+}
+
+.mode-btn {
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.mode-btn.active {
+  background: var(--brand-primary);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-btn:not(.active):hover { color: var(--text-primary); }
+
+/* ── Progress Ring ────────────────────────────────────────── */
+.timer-ring-wrap {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  flex-shrink: 0;
+}
+
+.timer-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-track {
+  fill: none;
+  stroke: var(--border-subtle);
+  stroke-width: 8;
+}
+
+.timer-ring-progress {
+  fill: none;
+  stroke: url(#timerGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-ring-glow {
+  fill: none;
+  stroke: var(--brand-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  opacity: 0.15;
+  filter: blur(4px);
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.timer-display {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-mode-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timer-session-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+
+.session-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--border-strong);
+  transition: all var(--transition-base);
+}
+
+.session-dot.completed {
+  background: var(--brand-primary);
+  box-shadow: 0 0 8px rgba(108,92,231,0.50);
+}
+
+.session-dot.current {
+  background: var(--brand-accent);
+  animation: pulse-glow 2s infinite;
+}
+
+/* ── Timer Controls ───────────────────────────────────────── */
+.timer-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.timer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all var(--transition-spring);
+  flex-shrink: 0;
+}
+
+.timer-btn-main {
+  width: 72px;
+  height: 72px;
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-brand);
+}
+
+.timer-btn-main:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 48px rgba(108,92,231,0.55);
+}
+
+.timer-btn-main:active { transform: scale(0.96); }
+
+.timer-btn-secondary {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+}
+
+.timer-btn-secondary:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.timer-btn-main svg, .timer-btn-secondary svg {
+  width: 24px;
+  height: 24px;
+  color: #fff;
+}
+
+.timer-btn-secondary svg {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+}
+
+/* ── Category Selector ────────────────────────────────────── */
+.category-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.category-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.category-chip:hover {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+.category-chip.active {
+  background: rgba(108,92,231,0.12);
+  border-color: rgba(108,92,231,0.30);
+  color: var(--brand-primary-light);
+}
+
+/* ── Focus Ambient ────────────────────────────────────────── */
+.focus-ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+  z-index: 0;
+}
+
+.focus-ambient.active {
+  opacity: 1;
+}
+
+.focus-ambient::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(108,92,231,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ── Focus Mode Fullscreen ────────────────────────────────── */
+.focus-mode-active .focus-layout {
+  grid-template-columns: 1fr;
+}
+
+.focus-mode-active .history-panel { display: none; }
+
+/* ── History Panel ────────────────────────────────────────── */
+.history-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+}
+
+.history-count {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  animation: fadeInUp var(--transition-base) forwards;
+}
+
+.history-item:hover {
+  border-color: var(--border-default);
+  transform: translateX(3px);
+}
+
+.history-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.history-item-icon.focus { background: rgba(108,92,231,0.12); }
+.history-item-icon.break { background: rgba(0,206,201,0.12); }
+
+.history-item-details { flex: 1; }
+.history-item-type {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.history-item-time {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.history-item-duration {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.history-item-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.history-item-status.completed { background: var(--brand-success); }
+.history-item-status.incomplete { background: var(--brand-warning); }
+
+/* ── Quick Stats ──────────────────────────────────────────── */
+.quick-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.quick-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.quick-stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.quick-stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+/* ── Focus State Indicator ────────────────────────────────── */
+.focus-state-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.focus-state-fill {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+  transition: width 1s linear;
+}
+
+/* ── Running indicator ────────────────────────────────────── */
+.running-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--brand-accent);
+  font-weight: 600;
+}
+
+.running-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  animation: pulse-glow 1.5s infinite;
+}
+
+.paused-indicator {
+  color: var(--brand-warning);
+}
+
+.paused-dot { background: var(--brand-warning); }
