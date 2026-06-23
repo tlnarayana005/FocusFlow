@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FocusFlow Dashboard — Track your daily focus score, screen time, streaks, and AI-powered productivity insights." />
+  <title>Dashboard — FocusFlow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- SVG Icons -->
+  <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg"><use href="assets/icons/icons.svg"/></svg>
+  </div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand" aria-label="FocusFlow home">
+        <div class="nav-brand-icon" aria-hidden="true">⚡</div>
+        <span class="text-gradient">FocusFlow</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="dashboard.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>Dashboard</a></li>
+        <li><a href="focus.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-timer"/></svg>Focus</a></li>
+        <li><a href="reports.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-reports"/></svg>Reports</a></li>
+        <li><a href="settings.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-settings"/></svg>Settings</a></li>
+        <li><a href="about.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-info"/></svg>About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" id="themeToggle">
+          <svg width="18" height="18" id="themeIcon"><use href="assets/icons/icons.svg#icon-moon"/></svg>
+        </button>
+        <a href="focus.html" class="btn btn-primary btn-sm" id="startFocusBtn">
+          ⚡ Start Focus
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <a href="dashboard.html" class="nav-link active">📊 Dashboard</a>
+    <a href="focus.html" class="nav-link">⏱️ Focus</a>
+    <a href="reports.html" class="nav-link">📈 Reports</a>
+    <a href="settings.html" class="nav-link">⚙️ Settings</a>
+    <a href="about.html" class="nav-link">ℹ️ About</a>
+  </div>
+
+  <!-- ── Main Layout ── -->
+  <div class="page-wrapper">
+    <div class="dashboard-layout">
+
+      <!-- ── Sidebar ── -->
+      <aside class="dashboard-sidebar" role="complementary" aria-label="Dashboard navigation">
+        <span class="sidebar-section-label">Main</span>
+        <a href="dashboard.html" class="sidebar-link active" aria-current="page">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>
+          Overview
+        </a>
+        <a href="focus.html" class="sidebar-link">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-timer"/></svg>
+          Focus Session
+        </a>
+        <a href="reports.html" class="sidebar-link">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-reports"/></svg>
+          Reports
+        </a>
+
+        <span class="sidebar-section-label" style="margin-top:var(--space-4)">Account</span>
+        <a href="settings.html" class="sidebar-link">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-settings"/></svg>
+          Settings
+        </a>
+        <a href="about.html" class="sidebar-link">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-info"/></svg>
+          About
+        </a>
+
+        <div class="sidebar-footer">
+          <!-- Quick start CTA -->
+          <a href="focus.html" class="btn btn-gradient w-full" style="justify-content:center;margin-bottom:var(--space-4)" id="sidebarFocusBtn">
+            ⚡ Start Focusing
+          </a>
+          <div class="sidebar-user" id="sidebarUser">
+            <div class="user-avatar" id="userAvatarInitial">FU</div>
+            <div class="user-info">
+              <div class="user-name" id="navUserName">Focus User</div>
+              <div class="user-role">Pro Member</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── Dashboard Main ── -->
+      <main class="dashboard-main" role="main" id="dashboardMain">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+          <div>
+            <h1 class="dashboard-greeting" id="dashboardGreeting">Good morning 👋</h1>
+            <p class="dashboard-date" id="dashboardDate">Today</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div id="trendIndicator" class="stat-change positive" aria-live="polite">↑ Loading…</div>
+            <div class="period-tabs" role="tablist" aria-label="Time period">
+              <button class="period-tab active" role="tab" aria-selected="true" id="tabToday">Today</button>
+              <button class="period-tab" role="tab" aria-selected="false" id="tabWeek">Week</button>
+              <button class="period-tab" role="tab" aria-selected="false" id="tabMonth">Month</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Stats Grid ── -->
+        <div class="stats-grid" role="region" aria-label="Key metrics">
+          <div class="stat-card card-primary" data-animate>
+            <div class="stat-icon stat-icon-primary" aria-hidden="true">⚡</div>
+            <div class="stat-value" id="stat-focus-score" aria-label="Focus score">--</div>
+            <div class="stat-label">Focus Score</div>
+            <div class="stat-change positive" aria-label="Change indicator">↑ vs yesterday</div>
+          </div>
+          <div class="stat-card card-accent" data-animate data-animate-delay="100">
+            <div class="stat-icon stat-icon-accent" aria-hidden="true">📱</div>
+            <div class="stat-value" id="stat-screen-time" aria-label="Screen time">--</div>
+            <div class="stat-label">Screen Time Today</div>
+            <div class="stat-change negative" aria-label="Change indicator">↓ 0.5h vs avg</div>
+          </div>
+          <div class="stat-card card-warning" data-animate data-animate-delay="200">
+            <div class="stat-icon stat-icon-warning" aria-hidden="true">🎯</div>
+            <div class="stat-value" id="stat-sessions" aria-label="Sessions completed">--</div>
+            <div class="stat-label">Sessions Today</div>
+            <div class="stat-change positive" aria-label="Change indicator">↑ on track</div>
+          </div>
+          <div class="stat-card card-success" data-animate data-animate-delay="300">
+            <div class="stat-icon stat-icon-success" aria-hidden="true">🔥</div>
+            <div class="stat-value" id="stat-streak" aria-label="Day streak">--</div>
+            <div class="stat-label">Day Streak</div>
+            <div class="stat-change positive" aria-label="Change indicator">↑ personal best!</div>
+          </div>
+        </div>
+
+        <!-- ── Weekly Chart + Focus Score ── -->
+        <div class="dashboard-grid-wide" data-animate>
+
+          <!-- Weekly Chart -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">Weekly Focus Trend</div>
+                <div class="chart-card-subtitle">Focus vs break hours per day</div>
+              </div>
+              <div class="chart-legend" aria-hidden="true">
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:#6C5CE7"></div>
+                  Focus
+                </div>
+                <div class="legend-item">
+                  <div class="legend-dot" style="background:rgba(0,206,201,0.6)"></div>
+                  Break
+                </div>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="weeklyChart" aria-label="Weekly focus hours bar chart" role="img"></canvas>
+            </div>
+          </div>
+
+          <!-- Focus Score Ring -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">Focus Score</div>
+                <div class="chart-card-subtitle">Today's productivity rating</div>
+              </div>
+            </div>
+            <div class="score-ring-container">
+              <div class="score-ring-wrap" role="img" aria-label="Focus score ring">
+                <svg class="score-ring-svg" viewBox="0 0 160 160" width="160" height="160">
+                  <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#6C5CE7"/>
+                      <stop offset="100%" stop-color="#00CEC9"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="var(--border-subtle)" stroke-width="10"/>
+                  <circle id="scoreRing" cx="80" cy="80" r="70" fill="none"
+                    stroke="url(#scoreGradient)" stroke-width="10" stroke-linecap="round"
+                    stroke-dasharray="439.82" stroke-dashoffset="439.82"
+                    style="transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset 1.2s ease"/>
+                </svg>
+                <div class="score-ring-text">
+                  <div class="score-number" id="scoreValue" aria-live="polite">0</div>
+                  <div class="score-label-sm" id="scoreDesc">Loading…</div>
+                </div>
+              </div>
+              <p class="text-sm text-secondary text-center" style="max-width:180px">
+                Based on completed sessions vs your daily goal
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── Goals + Recommendations ── -->
+        <div class="dashboard-grid" data-animate>
+
+          <!-- Goal Progress -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">Goal Progress</div>
+                <div class="chart-card-subtitle">Today's targets</div>
+              </div>
+              <a href="settings.html" class="btn btn-ghost btn-sm">Edit Goals</a>
+            </div>
+            <div class="goal-cards" id="goalList" aria-label="Goal progress list">
+              <!-- Rendered by dashboard.js -->
+              <div class="empty-state" style="padding:var(--space-8)">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Recommendations -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">🤖 AI Insights</div>
+                <div class="chart-card-subtitle">Personalized recommendations</div>
+              </div>
+              <span class="badge badge-primary">Smart</span>
+            </div>
+            <div class="recommendations-list" id="recommendationsList" aria-label="AI recommendations" aria-live="polite">
+              <div class="empty-state" style="padding:var(--space-8)">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── Streak + Recent Sessions ── -->
+        <div class="dashboard-grid" data-animate>
+
+          <!-- Streak Tracker -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">🔥 Focus Streak</div>
+                <div class="chart-card-subtitle">Consecutive days with sessions</div>
+              </div>
+            </div>
+            <div class="streak-display">
+              <div class="streak-number" id="streakNumber" aria-label="Day streak">0</div>
+              <div>
+                <div class="font-bold" style="font-size:var(--font-size-md)">Days</div>
+                <div class="text-muted text-sm">Keep going!</div>
+              </div>
+            </div>
+            <div class="streak-dots" id="streakDots" role="list" aria-label="Streak calendar">
+              <!-- Rendered by dashboard.js -->
+            </div>
+            <div class="divider"></div>
+            <p class="text-sm text-secondary">
+              🏆 Complete a session today to maintain your streak!
+            </p>
+          </div>
+
+          <!-- Recent Sessions -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <div class="chart-card-title">Recent Sessions</div>
+                <div class="chart-card-subtitle">Last 5 focus activities</div>
+              </div>
+              <a href="reports.html" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            <div class="session-mini-list" id="recentSessionsList" aria-label="Recent sessions">
+              <div class="empty-state" style="padding:var(--space-8)">
+                <div class="spinner"></div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <a href="focus.html" class="btn btn-gradient w-full" style="justify-content:center" id="dashStartSession">
+              ⚡ Start a Session
+            </a>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" role="alert"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Theme icon sync
+    const themeIcon = document.getElementById('themeIcon');
+    const updateThemeIcon = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (themeIcon) themeIcon.innerHTML = `<use href="assets/icons/icons.svg#icon-${isDark ? 'sun' : 'moon'}"/>`;
+    };
+    updateThemeIcon();
+    new MutationObserver(updateThemeIcon).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Update sidebar user info after StorageService loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = StorageService.getUser();
+      const nameEl = document.getElementById('navUserName');
+      const avatarEl = document.getElementById('userAvatarInitial');
+      if (nameEl) nameEl.textContent = user.name;
+      if (avatarEl) avatarEl.textContent = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+
+      // Period tab interactivity (visual only — chart already shows weekly data)
+      document.querySelectorAll('.period-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.period-tab').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FocusFlow Focus Session — Start a Pomodoro timer, track your focus sessions, and build deep work habits with a beautiful progress ring." />
+  <title>Focus Session — FocusFlow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/focus.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- SVG Icons -->
+  <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg"><use href="assets/icons/icons.svg"/></svg>
+  </div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand" aria-label="FocusFlow home">
+        <div class="nav-brand-icon" aria-hidden="true">⚡</div>
+        <span class="text-gradient">FocusFlow</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="dashboard.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>Dashboard</a></li>
+        <li><a href="focus.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-timer"/></svg>Focus</a></li>
+        <li><a href="reports.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-reports"/></svg>Reports</a></li>
+        <li><a href="settings.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-settings"/></svg>Settings</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" id="themeToggle">
+          <svg width="18" height="18" id="themeIcon"><use href="assets/icons/icons.svg#icon-moon"/></svg>
+        </button>
+        <a href="dashboard.html" class="btn btn-outline btn-sm">Dashboard</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+    <a href="focus.html" class="nav-link active">⏱️ Focus</a>
+    <a href="reports.html" class="nav-link">📈 Reports</a>
+    <a href="settings.html" class="nav-link">⚙️ Settings</a>
+  </div>
+
+  <!-- Ambient focus glow -->
+  <div class="focus-ambient" id="focusAmbient" aria-hidden="true"></div>
+
+  <!-- ── Page ── -->
+  <div class="page-wrapper">
+    <main class="focus-layout" role="main" id="focusMain">
+
+      <!-- ── Timer Section ── -->
+      <section class="timer-section" aria-label="Pomodoro timer">
+
+        <!-- Mode selector -->
+        <div class="mode-selector" role="tablist" aria-label="Timer mode">
+          <button class="mode-btn active" data-mode="focus" role="tab" aria-selected="true" id="modeFocus">
+            Focus
+          </button>
+          <button class="mode-btn" data-mode="shortBreak" role="tab" aria-selected="false" id="modeShortBreak">
+            Short Break
+          </button>
+          <button class="mode-btn" data-mode="longBreak" role="tab" aria-selected="false" id="modeLongBreak">
+            Long Break
+          </button>
+        </div>
+
+        <!-- Timer Ring -->
+        <div class="timer-ring-wrap" role="timer" aria-live="off" aria-label="Focus timer">
+          <svg id="timerRingSvg" class="timer-ring-svg" viewBox="0 0 300 300" width="300" height="300" aria-hidden="true">
+            <defs>
+              <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6C5CE7"/>
+                <stop offset="100%" stop-color="#00CEC9"/>
+              </linearGradient>
+            </defs>
+            <!-- Track -->
+            <circle class="timer-ring-track" cx="150" cy="150" r="130"/>
+            <!-- Glow -->
+            <circle id="timerRingGlow" class="timer-ring-glow" cx="150" cy="150" r="130"
+              stroke-dasharray="816.81" stroke-dashoffset="0"/>
+            <!-- Progress -->
+            <circle id="timerRing" class="timer-ring-progress" cx="150" cy="150" r="130"
+              stroke-dasharray="816.81" stroke-dashoffset="0"/>
+          </svg>
+
+          <div class="timer-center">
+            <div class="timer-display" id="timerDisplay" aria-atomic="true">25:00</div>
+            <div class="timer-mode-label" id="timerModeLabel">Focus</div>
+            <div class="timer-session-count" id="sessionDots" aria-label="Session progress">
+              <!-- Rendered by focus.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress bar (mobile) -->
+        <div class="focus-state-bar" style="width:100%;max-width:300px" aria-hidden="true">
+          <div class="focus-state-fill" id="focusProgressBar" style="width:0%"></div>
+        </div>
+
+        <!-- Status indicator -->
+        <div id="statusIndicator" aria-live="polite" aria-atomic="true">
+          <span class="text-muted text-sm">Ready to focus</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="timer-controls" role="group" aria-label="Timer controls">
+          <button class="timer-btn timer-btn-secondary" id="resetBtn" aria-label="Reset timer" title="Reset (Ctrl+R)">
+            <svg width="20" height="20"><use href="assets/icons/icons.svg#icon-reset"/></svg>
+          </button>
+
+          <button class="timer-btn timer-btn-main" id="startBtn" aria-label="Start timer" title="Start/Pause (Space)">
+            <span id="startIcon">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" style="color:#fff">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+            </span>
+          </button>
+
+          <button class="timer-btn timer-btn-secondary" id="skipBtn" aria-label="Skip to next session" title="Skip session">
+            <svg width="20" height="20"><use href="assets/icons/icons.svg#icon-skip"/></svg>
+          </button>
+        </div>
+
+        <!-- Category selector -->
+        <fieldset style="border:none;padding:0">
+          <legend class="text-sm text-muted text-center" style="margin-bottom:var(--space-3)">Session Category</legend>
+          <div class="category-selector" role="group" aria-label="Select focus category">
+            <button class="category-chip active" data-category="work" id="catWork" aria-pressed="true">💼 Work</button>
+            <button class="category-chip" data-category="study" id="catStudy" aria-pressed="false">📚 Study</button>
+            <button class="category-chip" data-category="personal" id="catPersonal" aria-pressed="false">🌿 Personal</button>
+          </div>
+        </fieldset>
+
+        <!-- Keyboard hint -->
+        <p class="text-xs text-muted text-center" style="margin-top:var(--space-4)">
+          Press <kbd style="background:var(--bg-card);border:1px solid var(--border-default);border-radius:4px;padding:1px 6px;font-size:11px">Space</kbd> to start · <kbd style="background:var(--bg-card);border:1px solid var(--border-default);border-radius:4px;padding:1px 6px;font-size:11px">Ctrl+R</kbd> to reset
+        </p>
+
+      </section>
+
+      <!-- ── History Panel ── -->
+      <aside class="history-panel" role="complementary" aria-label="Session history">
+
+        <!-- Quick Stats -->
+        <div class="card" style="padding:var(--space-5)">
+          <h2 class="chart-card-title" style="margin-bottom:var(--space-4);font-size:var(--font-size-base)">Today's Progress</h2>
+          <div class="quick-stats">
+            <div class="quick-stat">
+              <div class="quick-stat-value" id="quickFocusMins">0m</div>
+              <div class="quick-stat-label">Focus Time</div>
+            </div>
+            <div class="quick-stat">
+              <div class="quick-stat-value" id="quickSessions">0</div>
+              <div class="quick-stat-label">Sessions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timer tips -->
+        <div class="card" style="padding:var(--space-5);background:rgba(108,92,231,0.06);border-color:rgba(108,92,231,0.15)">
+          <h3 class="text-sm font-semibold" style="margin-bottom:var(--space-3)">💡 Pro Tips</h3>
+          <ul style="display:flex;flex-direction:column;gap:var(--space-2)">
+            <li class="text-xs text-secondary">🎯 Work in 25-min blocks for peak performance</li>
+            <li class="text-xs text-secondary">📵 Silence notifications during sessions</li>
+            <li class="text-xs text-secondary">🌿 Take real breaks — move away from screens</li>
+            <li class="text-xs text-secondary">🔥 Consistency beats intensity every time</li>
+          </ul>
+        </div>
+
+        <!-- Session History -->
+        <div>
+          <div class="history-header">
+            <h2 class="history-title">Session History</h2>
+            <span class="history-count" id="historyCount" aria-label="Number of sessions">0</span>
+          </div>
+          <div class="history-list" id="historyList" role="list" aria-label="Completed sessions" aria-live="polite">
+            <!-- Rendered by focus.js -->
+          </div>
+        </div>
+
+        <!-- View full reports -->
+        <a href="reports.html" class="btn btn-outline w-full" style="justify-content:center;margin-top:auto" id="viewReportsBtn">
+          📈 View Full Reports
+        </a>
+
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" role="alert"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/focus.js"></script>
+  <script>
+    // Theme icon sync
+    const themeIcon = document.getElementById('themeIcon');
+    const updateThemeIcon = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (themeIcon) themeIcon.innerHTML = `<use href="assets/icons/icons.svg#icon-${isDark ? 'sun' : 'moon'}"/>`;
+    };
+    updateThemeIcon();
+    new MutationObserver(updateThemeIcon).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Ambient glow when running
+    const focusAmbient = document.getElementById('focusAmbient');
+    const startBtn = document.getElementById('startBtn');
+    startBtn?.addEventListener('click', () => {
+      setTimeout(() => {
+        const isRunning = document.querySelector('.running-indicator') !== null;
+        focusAmbient?.classList.toggle('active', isRunning);
+      }, 100);
+    });
+
+    // Category chip aria-pressed sync
+    document.querySelectorAll('.category-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.category-chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+        chip.setAttribute('aria-pressed', 'true');
+      });
+    });
+  </script>
+</body>
+</html>

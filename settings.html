@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FocusFlow Settings — Customize your focus timer, set daily goals, toggle dark mode, and manage your data." />
+  <title>Settings — FocusFlow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .settings-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-8);
+    }
+
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    /* Sticky settings sidebar */
+    .settings-nav {
+      position: sticky;
+      top: calc(var(--nav-height) + var(--space-6));
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .settings-nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .settings-nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .settings-nav-item.active {
+      background: rgba(108,92,231,0.12);
+      color: var(--brand-primary-light);
+    }
+
+    /* Settings sections */
+    .settings-sections { display: flex; flex-direction: column; gap: var(--space-6); }
+
+    .settings-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .settings-section-header {
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .settings-section-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .settings-section-title {
+      font-size: var(--font-size-base);
+      font-weight: 700;
+    }
+
+    .settings-section-subtitle {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+    }
+
+    .settings-section-body { padding: var(--space-6); }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .settings-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .settings-row:first-child { padding-top: 0; }
+
+    .settings-row-info { flex: 1; }
+    .settings-row-label { font-size: var(--font-size-sm); font-weight: 600; color: var(--text-primary); }
+    .settings-row-desc { font-size: var(--font-size-xs); color: var(--text-muted); margin-top: 2px; }
+
+    .settings-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    /* Theme selector cards */
+    .theme-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    .theme-card {
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .theme-card:hover { border-color: var(--border-default); }
+    .theme-card.active { border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(108,92,231,0.15); }
+
+    .theme-card-preview {
+      height: 80px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .theme-preview-dark { background: #0D0D1A; }
+    .theme-preview-light { background: #F0F0F8; }
+
+    .theme-preview-bar {
+      height: 8px;
+      border-radius: 4px;
+    }
+
+    .theme-card-label {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .theme-card-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+
+    .theme-card.active .theme-card-check {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      color: #fff;
+    }
+
+    .theme-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Data zone */
+    .danger-zone {
+      border-color: rgba(214,48,49,0.20) !important;
+    }
+
+    .danger-zone .settings-section-header {
+      border-color: rgba(214,48,49,0.15);
+    }
+
+    @media (max-width: 767px) {
+      .settings-page { padding: var(--space-4); }
+      .settings-layout { grid-template-columns: 1fr; }
+      .settings-nav { display: none; }
+      .settings-form-grid { grid-template-columns: 1fr; }
+      .theme-cards { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG Icons -->
+  <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg"><use href="assets/icons/icons.svg"/></svg>
+  </div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand" aria-label="FocusFlow home">
+        <div class="nav-brand-icon" aria-hidden="true">⚡</div>
+        <span class="text-gradient">FocusFlow</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="dashboard.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>Dashboard</a></li>
+        <li><a href="focus.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-timer"/></svg>Focus</a></li>
+        <li><a href="reports.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-reports"/></svg>Reports</a></li>
+        <li><a href="settings.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-settings"/></svg>Settings</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" id="themeToggle">
+          <svg width="18" height="18" id="themeIcon"><use href="assets/icons/icons.svg#icon-moon"/></svg>
+        </button>
+        <a href="focus.html" class="btn btn-primary btn-sm">⚡ Focus</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+    <a href="focus.html" class="nav-link">⏱️ Focus</a>
+    <a href="reports.html" class="nav-link">📈 Reports</a>
+    <a href="settings.html" class="nav-link active">⚙️ Settings</a>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="settings-page">
+
+      <!-- Page Title -->
+      <div style="margin-bottom:var(--space-8)">
+        <h1 style="font-size:var(--font-size-2xl);font-weight:800;letter-spacing:-0.03em">Settings</h1>
+        <p class="text-secondary text-sm" style="margin-top:var(--space-1)">Customize FocusFlow to match your workflow</p>
+      </div>
+
+      <div class="settings-layout">
+
+        <!-- Settings Nav (Sidebar) -->
+        <nav class="settings-nav" aria-label="Settings sections">
+          <button class="settings-nav-item active" data-settings-section="profile" id="navProfile">
+            👤 Profile
+          </button>
+          <button class="settings-nav-item" data-settings-section="appearance" id="navAppearance">
+            🎨 Appearance
+          </button>
+          <button class="settings-nav-item" data-settings-section="timer" id="navTimer">
+            ⏱️ Timer
+          </button>
+          <button class="settings-nav-item" data-settings-section="notifications" id="navNotifications">
+            🔔 Notifications
+          </button>
+          <button class="settings-nav-item" data-settings-section="data" id="navData">
+            💾 Data
+          </button>
+        </nav>
+
+        <!-- Settings Sections -->
+        <main role="main">
+          <div class="settings-sections">
+
+            <!-- ── Profile ── -->
+            <section class="settings-section" data-section="profile" aria-label="Profile settings">
+              <div class="settings-section-header">
+                <div class="settings-section-icon" style="background:rgba(108,92,231,0.12)">👤</div>
+                <div>
+                  <div class="settings-section-title">Profile</div>
+                  <div class="settings-section-subtitle">Your personal information</div>
+                </div>
+              </div>
+              <div class="settings-section-body">
+                <form id="profileForm" novalidate aria-label="Profile settings form">
+                  <div class="settings-form-grid" style="margin-bottom:var(--space-4)">
+                    <div class="form-group">
+                      <label class="form-label" for="settings-name">Display Name</label>
+                      <input type="text" id="settings-name" class="form-input" placeholder="Your name" autocomplete="name" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-email">Email</label>
+                      <input type="email" id="settings-email" class="form-input" placeholder="you@example.com" autocomplete="email" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom:var(--space-6)">
+                    <label class="form-label" for="settings-goal-hours">Daily Focus Goal (hours)</label>
+                    <input type="number" id="settings-goal-hours" class="form-input" min="0.5" max="16" step="0.5" />
+                    <span class="text-xs text-muted" style="margin-top:var(--space-1)">How many hours of focused work do you want to do each day?</span>
+                  </div>
+                  <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Profile</button>
+                </form>
+              </div>
+            </section>
+
+            <!-- ── Appearance ── -->
+            <section class="settings-section" data-section="appearance" aria-label="Appearance settings">
+              <div class="settings-section-header">
+                <div class="settings-section-icon" style="background:rgba(0,206,201,0.12)">🎨</div>
+                <div>
+                  <div class="settings-section-title">Appearance</div>
+                  <div class="settings-section-subtitle">Customize the look and feel</div>
+                </div>
+              </div>
+              <div class="settings-section-body">
+                <p class="form-label" style="margin-bottom:var(--space-4)">Theme</p>
+                <div class="theme-cards" role="radiogroup" aria-label="Theme selection">
+                  <div class="theme-card active" data-theme-select="dark" role="radio" aria-checked="true" tabindex="0" id="themeDark">
+                    <div class="theme-card-preview theme-preview-dark" aria-hidden="true">
+                      <div class="theme-preview-bar" style="background:#6C5CE7;width:60%"></div>
+                      <div class="theme-preview-bar" style="background:rgba(255,255,255,0.15);width:90%"></div>
+                      <div class="theme-preview-bar" style="background:rgba(255,255,255,0.08);width:75%"></div>
+                    </div>
+                    <div class="theme-card-row">
+                      <span class="theme-card-label">🌙 Dark</span>
+                      <div class="theme-card-check" aria-hidden="true">✓</div>
+                    </div>
+                  </div>
+                  <div class="theme-card" data-theme-select="light" role="radio" aria-checked="false" tabindex="0" id="themeLight">
+                    <div class="theme-card-preview theme-preview-light" aria-hidden="true">
+                      <div class="theme-preview-bar" style="background:#6C5CE7;width:60%"></div>
+                      <div class="theme-preview-bar" style="background:rgba(0,0,0,0.12);width:90%"></div>
+                      <div class="theme-preview-bar" style="background:rgba(0,0,0,0.06);width:75%"></div>
+                    </div>
+                    <div class="theme-card-row">
+                      <span class="theme-card-label">☀️ Light</span>
+                      <div class="theme-card-check" aria-hidden="true">✓</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── Timer ── -->
+            <section class="settings-section" data-section="timer" aria-label="Timer settings">
+              <div class="settings-section-header">
+                <div class="settings-section-icon" style="background:rgba(253,203,110,0.12)">⏱️</div>
+                <div>
+                  <div class="settings-section-title">Timer</div>
+                  <div class="settings-section-subtitle">Pomodoro durations and behavior</div>
+                </div>
+              </div>
+              <div class="settings-section-body">
+                <form id="timerForm" novalidate aria-label="Timer settings form">
+                  <div class="settings-form-grid" style="margin-bottom:var(--space-4)">
+                    <div class="form-group">
+                      <label class="form-label" for="settings-focus-duration">Focus Duration (minutes)</label>
+                      <input type="number" id="settings-focus-duration" class="form-input" min="1" max="120" step="1" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-break-duration">Short Break (minutes)</label>
+                      <input type="number" id="settings-break-duration" class="form-input" min="1" max="60" step="1" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-long-break">Long Break (minutes)</label>
+                      <input type="number" id="settings-long-break" class="form-input" min="5" max="60" step="1" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="settings-sessions-before-long">Sessions Before Long Break</label>
+                      <input type="number" id="settings-sessions-before-long" class="form-input" min="1" max="10" step="1" />
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary" id="saveTimerBtn">Save Timer Settings</button>
+                </form>
+              </div>
+            </section>
+
+            <!-- ── Notifications ── -->
+            <section class="settings-section" data-section="notifications" aria-label="Notification settings">
+              <div class="settings-section-header">
+                <div class="settings-section-icon" style="background:rgba(0,184,148,0.12)">🔔</div>
+                <div>
+                  <div class="settings-section-title">Notifications</div>
+                  <div class="settings-section-subtitle">Manage alerts and sounds</div>
+                </div>
+              </div>
+              <div class="settings-section-body">
+                <div class="settings-row">
+                  <div class="settings-row-info">
+                    <div class="settings-row-label">Browser Notifications</div>
+                    <div class="settings-row-desc">Get notified when sessions start and end</div>
+                  </div>
+                  <label class="toggle" aria-label="Toggle browser notifications">
+                    <input type="checkbox" id="settings-notifications" role="switch" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-info">
+                    <div class="settings-row-label">Sound Effects</div>
+                    <div class="settings-row-desc">Play a sound when a session completes</div>
+                  </div>
+                  <label class="toggle" aria-label="Toggle sound effects">
+                    <input type="checkbox" id="settings-sound" role="switch" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-info">
+                    <div class="settings-row-label">Auto-Start Breaks</div>
+                    <div class="settings-row-desc">Automatically begin break timer after focus ends</div>
+                  </div>
+                  <label class="toggle" aria-label="Toggle auto-start breaks">
+                    <input type="checkbox" id="settings-auto-break" role="switch" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <!-- ── Data Management ── -->
+            <section class="settings-section danger-zone" data-section="data" aria-label="Data management">
+              <div class="settings-section-header">
+                <div class="settings-section-icon" style="background:rgba(214,48,49,0.12)">💾</div>
+                <div>
+                  <div class="settings-section-title">Data & Privacy</div>
+                  <div class="settings-section-subtitle">Export or delete your data</div>
+                </div>
+              </div>
+              <div class="settings-section-body">
+                <div class="settings-row">
+                  <div class="settings-row-info">
+                    <div class="settings-row-label">Export Your Data</div>
+                    <div class="settings-row-desc">Download all sessions, settings, and profile as JSON</div>
+                  </div>
+                  <button class="btn btn-outline btn-sm" id="exportDataBtn">Export</button>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-info">
+                    <div class="settings-row-label" style="color:var(--brand-danger)">Clear All Data</div>
+                    <div class="settings-row-desc">Permanently delete all sessions and preferences. Cannot be undone.</div>
+                  </div>
+                  <button class="btn btn-danger btn-sm" id="clearDataBtn">Clear Data</button>
+                </div>
+                <div style="margin-top:var(--space-5);padding:var(--space-4);background:var(--bg-hover);border-radius:var(--radius-md)">
+                  <p class="text-xs text-muted">
+                    🔒 All your data is stored locally on your device using localStorage. FocusFlow never sends data to external servers.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="assertive" role="alert"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/settings.js"></script>
+  <script>
+    // Theme icon sync
+    const themeIcon = document.getElementById('themeIcon');
+    const updateThemeIcon = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (themeIcon) themeIcon.innerHTML = `<use href="assets/icons/icons.svg#icon-${isDark ? 'sun' : 'moon'}"/>`;
+    };
+    updateThemeIcon();
+    new MutationObserver(updateThemeIcon).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Keyboard nav for theme cards
+    document.querySelectorAll('[data-theme-select]').forEach(card => {
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+      });
+    });
+  </script>
+</body>
+</html>

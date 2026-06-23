@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About FocusFlow — Our mission to help modern professionals reclaim their focus, reduce screen time, and build sustainable productivity habits." />
+  <title>About — FocusFlow</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    /* ── About page specific ──────────────────────────── */
+    .about-hero {
+      padding: calc(var(--nav-height) + var(--space-20)) 0 var(--space-20);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .about-hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%,
+        rgba(108,92,231,0.20) 0%,
+        transparent 70%);
+      pointer-events: none;
+    }
+
+    .about-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .about-hero-title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: var(--space-6);
+    }
+
+    /* ── Mission Section ──────────────────────────────── */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: center;
+    }
+
+    .mission-text h2 {
+      font-size: var(--font-size-3xl);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: var(--space-5);
+    }
+
+    .mission-text p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: var(--space-4);
+    }
+
+    .mission-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    .mission-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+    }
+
+    .mission-stat-value {
+      font-size: var(--font-size-2xl);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .mission-stat-label {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      margin-top: var(--space-1);
+    }
+
+    /* ── Values ───────────────────────────────────────── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-6);
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+
+    .value-card:hover {
+      border-color: rgba(108,92,231,0.25);
+      transform: translateY(-3px);
+    }
+
+    .value-icon {
+      font-size: 36px;
+      margin-bottom: var(--space-4);
+      display: block;
+    }
+
+    .value-title {
+      font-size: var(--font-size-md);
+      font-weight: 700;
+      margin-bottom: var(--space-3);
+    }
+
+    .value-desc {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ── Team ─────────────────────────────────────────── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+
+    .team-card:hover {
+      border-color: var(--border-default);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .team-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto var(--space-4);
+      box-shadow: var(--shadow-brand);
+    }
+
+    .team-name {
+      font-size: var(--font-size-base);
+      font-weight: 700;
+      margin-bottom: var(--space-1);
+    }
+
+    .team-role {
+      font-size: var(--font-size-sm);
+      color: var(--brand-primary-light);
+      font-weight: 500;
+      margin-bottom: var(--space-2);
+    }
+
+    .team-bio {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Tech Stack ───────────────────────────────────── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-4);
+    }
+
+    .tech-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      text-align: center;
+      transition: all var(--transition-fast);
+    }
+
+    .tech-item:hover {
+      border-color: rgba(108,92,231,0.25);
+      transform: translateY(-2px);
+    }
+
+    .tech-icon { font-size: 28px; margin-bottom: var(--space-2); }
+    .tech-label { font-size: var(--font-size-xs); color: var(--text-muted); font-weight: 500; }
+
+    /* ── Contact ──────────────────────────────────────── */
+    .contact-card {
+      background: var(--gradient-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-options {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-top: var(--space-8);
+    }
+
+    .contact-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-6);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all var(--transition-fast);
+    }
+
+    .contact-option:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      transform: translateY(-2px);
+    }
+
+    /* ── Timeline ─────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-8);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--gradient-brand);
+      opacity: 0.3;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: var(--space-8);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-8) + 6px);
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(108,92,231,0.20);
+    }
+
+    .timeline-year {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-2);
+    }
+
+    .timeline-title {
+      font-size: var(--font-size-md);
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+    }
+
+    .timeline-desc {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 1023px) {
+      .mission-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 767px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .tech-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 479px) {
+      .team-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG Icons -->
+  <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg"><use href="assets/icons/icons.svg"/></svg>
+  </div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand" aria-label="FocusFlow home">
+        <div class="nav-brand-icon" aria-hidden="true">⚡</div>
+        <span class="text-gradient">FocusFlow</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="dashboard.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>Dashboard</a></li>
+        <li><a href="focus.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-timer"/></svg>Focus</a></li>
+        <li><a href="reports.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-reports"/></svg>Reports</a></li>
+        <li><a href="about.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-info"/></svg>About</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" id="themeToggle">
+          <svg width="18" height="18" id="themeIcon"><use href="assets/icons/icons.svg#icon-moon"/></svg>
+        </button>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">Open App</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation">
+    <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+    <a href="focus.html" class="nav-link">⏱️ Focus</a>
+    <a href="reports.html" class="nav-link">📈 Reports</a>
+    <a href="settings.html" class="nav-link">⚙️ Settings</a>
+    <a href="about.html" class="nav-link active">ℹ️ About</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="about-hero" aria-label="About hero">
+    <div class="about-hero-bg" aria-hidden="true"></div>
+    <div class="container">
+      <div class="about-hero-content">
+        <div class="section-label" style="margin:0 auto var(--space-6)" data-animate>Our Story</div>
+        <h1 class="about-hero-title" data-animate data-animate-delay="100">
+          Built for people who<br /><span class="text-gradient">value their attention</span>
+        </h1>
+        <p class="hero-subtitle" style="margin:0 auto" data-animate data-animate-delay="200">
+          FocusFlow was born from a simple frustration: too many productivity apps track data but don't tell you what to do with it. We built something different.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Mission ── -->
+  <section class="section" id="mission" aria-label="Mission">
+    <div class="container">
+      <div class="mission-grid">
+        <div class="mission-text" data-animate>
+          <div class="section-label" style="margin-bottom:var(--space-5)">Our Mission</div>
+          <h2>Focus is a skill.<br />We help you train it.</h2>
+          <p>
+            In a world of endless notifications, infinite scroll, and algorithmic dopamine loops, sustained attention has become one of the most valuable and rarest cognitive resources.
+          </p>
+          <p>
+            FocusFlow exists to give that resource back to you. Through structured work intervals, habit-building mechanics, and honest analytics, we help you understand your mind and work with it — not against it.
+          </p>
+          <p>
+            We believe productivity isn't about doing more. It's about doing what matters, with full presence.
+          </p>
+        </div>
+        <div class="mission-stats" data-animate data-animate-delay="200">
+          <div class="mission-stat">
+            <div class="mission-stat-value">38%</div>
+            <div class="mission-stat-label">Avg productivity increase reported by users after 30 days</div>
+          </div>
+          <div class="mission-stat">
+            <div class="mission-stat-value">2.1h</div>
+            <div class="mission-stat-label">Average daily screen time reduced per active user</div>
+          </div>
+          <div class="mission-stat">
+            <div class="mission-stat-value">91%</div>
+            <div class="mission-stat-label">Users report better work-life balance after 2 weeks</div>
+          </div>
+          <div class="mission-stat">
+            <div class="mission-stat-value">12K+</div>
+            <div class="mission-stat-label">Focused professionals trust FocusFlow daily</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Values ── -->
+  <section class="section" style="background:var(--bg-surface)" aria-label="Our values">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-animate>What we believe</div>
+        <h2 data-animate data-animate-delay="100">Our core values</h2>
+      </div>
+      <div class="values-grid">
+        <article class="value-card" data-animate data-animate-delay="100">
+          <span class="value-icon">🔐</span>
+          <h3 class="value-title">Privacy First</h3>
+          <p class="value-desc">Your data lives on your device, period. No accounts required. No data sent to servers. Your focus habits are yours alone.</p>
+        </article>
+        <article class="value-card" data-animate data-animate-delay="200">
+          <span class="value-icon">⚡</span>
+          <h3 class="value-title">Clarity over Complexity</h3>
+          <p class="value-desc">We ruthlessly cut features that don't serve focus. Every pixel has a purpose. Simple by design — powerful by necessity.</p>
+        </article>
+        <article class="value-card" data-animate data-animate-delay="300">
+          <span class="value-icon">🌱</span>
+          <h3 class="value-title">Sustainable Performance</h3>
+          <p class="value-desc">Sprinting is for races. Deep work is a marathon. We encourage rhythmic, sustainable focus — not toxic hustle culture.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Story / Timeline ── -->
+  <section class="section" aria-label="Our journey">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-16);align-items:start">
+        <div data-animate>
+          <div class="section-label" style="margin-bottom:var(--space-6)">Our Journey</div>
+          <h2 style="font-size:var(--font-size-3xl);font-weight:900;letter-spacing:-0.04em;margin-bottom:var(--space-8)">How we got here</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-year">2022</div>
+              <div class="timeline-title">The Problem</div>
+              <p class="timeline-desc">Two software engineers noticed they were spending 9+ hours on screens daily yet accomplishing less. Standard tools tracked time but offered no insight.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2023</div>
+              <div class="timeline-title">First Prototype</div>
+              <p class="timeline-desc">A simple Pomodoro timer with a basic analytics dashboard. Shared it with 50 friends. The response was overwhelming — people wanted more.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">2024</div>
+              <div class="timeline-title">FocusFlow v1.0</div>
+              <p class="timeline-desc">Full redesign with AI-powered recommendations, glassmorphism UI, dark mode, and comprehensive reports. 12,000+ users in the first month.</p>
+            </div>
+            <div class="timeline-item" style="padding-bottom:0">
+              <div class="timeline-year">Today</div>
+              <div class="timeline-title">The Mission Continues</div>
+              <p class="timeline-desc">We're building the most human-centered productivity tool on the web. No dark patterns, no subscription traps, no data harvesting. Just focus.</p>
+            </div>
+          </div>
+        </div>
+        <div data-animate data-animate-delay="200">
+          <div class="section-label" style="margin-bottom:var(--space-6)">Built With</div>
+          <h2 style="font-size:var(--font-size-3xl);font-weight:900;letter-spacing:-0.04em;margin-bottom:var(--space-8)">The tech stack</h2>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-icon">🌐</div>
+              <div class="tech-label">HTML5</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">🎨</div>
+              <div class="tech-label">CSS3</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">⚡</div>
+              <div class="tech-label">Vanilla JS</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">📊</div>
+              <div class="tech-label">Chart.js</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">💾</div>
+              <div class="tech-label">localStorage</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-icon">🖋️</div>
+              <div class="tech-label">Inter Font</div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:var(--space-6);background:rgba(108,92,231,0.06);border-color:rgba(108,92,231,0.15)">
+            <p class="text-sm text-secondary">
+              🚀 FocusFlow is built with <strong class="text-primary">zero frameworks</strong> and zero external dependencies beyond Chart.js. It loads instantly, works offline, and respects your browser's capabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Team ── -->
+  <section class="section" style="background:var(--bg-surface)" id="team" aria-label="Team">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-animate>The people</div>
+        <h2 data-animate data-animate-delay="100">Meet the team</h2>
+        <p data-animate data-animate-delay="200">A small, focused team building a tool we genuinely use every day.</p>
+      </div>
+      <div class="team-grid">
+        <article class="team-card" data-animate data-animate-delay="100">
+          <div class="team-avatar" style="background:var(--gradient-brand)">AK</div>
+          <h3 class="team-name">Alex Kim</h3>
+          <div class="team-role">Co-founder & CEO</div>
+          <p class="team-bio">Former productivity researcher at MIT. Obsessed with the intersection of neuroscience and software design.</p>
+        </article>
+        <article class="team-card" data-animate data-animate-delay="200">
+          <div class="team-avatar" style="background:var(--gradient-cool)">MJ</div>
+          <h3 class="team-name">Maya Johnson</h3>
+          <div class="team-role">Co-founder & CTO</div>
+          <p class="team-bio">10 years building dev tools. Believes great software should disappear into the background and let you focus.</p>
+        </article>
+        <article class="team-card" data-animate data-animate-delay="300">
+          <div class="team-avatar" style="background:var(--gradient-warm)">SR</div>
+          <h3 class="team-name">Sofia Reyes</h3>
+          <div class="team-role">Head of Design</div>
+          <p class="team-bio">Previously at Linear and Notion. Passionate about making complex data feel simple, beautiful, and actionable.</p>
+        </article>
+        <article class="team-card" data-animate data-animate-delay="400">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#00B894,#00CEC9)">JP</div>
+          <h3 class="team-name">James Park</h3>
+          <div class="team-role">Lead Engineer</div>
+          <p class="team-bio">Performance obsessive. If it doesn't score 100 on Lighthouse, it's not done. Builds for real users on real devices.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section class="section" id="contact" aria-label="Contact">
+    <div class="container">
+      <div class="contact-card" data-animate>
+        <div class="section-label" style="margin:0 auto var(--space-5)">Get in touch</div>
+        <h2 style="font-size:clamp(1.875rem,4vw,3rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:var(--space-4)">
+          We'd love to hear from you
+        </h2>
+        <p style="color:var(--text-secondary);max-width:500px;margin:0 auto;line-height:1.7">
+          Questions, feedback, feature requests, or just want to share your focus journey? We read every message and respond to most within 24 hours.
+        </p>
+        <div class="contact-options">
+          <a href="mailto:hello@focusflow.app" class="contact-option" id="contactEmail">
+            📧 hello@focusflow.app
+          </a>
+          <a href="#" class="contact-option" id="contactTwitter">
+            🐦 @focusflowapp
+          </a>
+          <a href="#" class="contact-option" id="contactGithub">
+            🐙 GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-brand">
+            <div class="nav-brand-icon">⚡</div>
+            <span class="text-gradient">FocusFlow</span>
+          </a>
+          <p>The modern productivity platform for people who take their focus seriously.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Product</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html" class="footer-link">Dashboard</a></li>
+            <li><a href="focus.html" class="footer-link">Focus Mode</a></li>
+            <li><a href="reports.html" class="footer-link">Reports</a></li>
+            <li><a href="settings.html" class="footer-link">Settings</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html" class="footer-link">About</a></li>
+            <li><a href="about.html#mission" class="footer-link">Mission</a></li>
+            <li><a href="about.html#team" class="footer-link">Team</a></li>
+            <li><a href="about.html#contact" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Resources</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="#" class="footer-link">Changelog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 FocusFlow. All rights reserved.</span>
+        <span>Built with ❤️ for focused minds</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const themeIcon = document.getElementById('themeIcon');
+    const updateThemeIcon = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (themeIcon) themeIcon.innerHTML = `<use href="assets/icons/icons.svg#icon-${isDark ? 'sun' : 'moon'}"/>`;
+    };
+    updateThemeIcon();
+    new MutationObserver(updateThemeIcon).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  </script>
+</body>
+</html>

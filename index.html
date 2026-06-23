@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FocusFlow — The modern productivity platform that helps you reduce screen time, build focus habits, and achieve your goals with AI-powered insights." />
+  <meta property="og:title" content="FocusFlow — Reclaim Your Focus" />
+  <meta property="og:description" content="The modern productivity platform built for deep work." />
+  <title>FocusFlow — Reclaim Your Focus</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    /* ── Landing-specific styles ──────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: var(--nav-height);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 30%,
+        rgba(108,92,231,0.18) 0%,
+        rgba(0,206,201,0.08) 50%,
+        transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      background: rgba(108,92,231,0.12);
+      border: 1px solid rgba(108,92,231,0.25);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-primary-light);
+      margin-bottom: var(--space-6);
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--brand-primary-light);
+      animation: pulse-glow 2s infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-subtitle {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: var(--space-8);
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-10);
+    }
+
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+
+    .avatar-stack-item {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-base);
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin-left: -8px;
+    }
+
+    .avatar-stack-item:first-child { margin-left: 0; }
+
+    .social-proof-text {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+    }
+
+    .social-proof-text strong {
+      color: var(--text-primary);
+    }
+
+    /* ── Features Section ─────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition-base);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--gradient-brand);
+      opacity: 0;
+      transition: opacity var(--transition-base);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(108,92,231,0.25);
+      box-shadow: var(--shadow-brand);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: var(--space-5);
+    }
+
+    .feature-title {
+      font-size: var(--font-size-md);
+      font-weight: 700;
+      margin-bottom: var(--space-3);
+    }
+
+    .feature-desc {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: var(--font-size-sm);
+    }
+
+    /* ── How it works ─────────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(16.66% + 20px);
+      right: calc(16.66% + 20px);
+      height: 2px;
+      background: var(--gradient-brand);
+      opacity: 0.3;
+    }
+
+    .step-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-4);
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--gradient-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: var(--font-size-lg);
+      color: #fff;
+      box-shadow: var(--shadow-brand);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-title {
+      font-size: var(--font-size-md);
+      font-weight: 700;
+    }
+
+    .step-desc {
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+      line-height: 1.7;
+    }
+
+    /* ── App Preview ──────────────────────────────────── */
+    .app-preview {
+      position: relative;
+      margin-top: var(--space-16);
+    }
+
+    .preview-window {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg),
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 48px 120px rgba(0,0,0,0.6);
+    }
+
+    .preview-titlebar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .preview-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .preview-dot-r { background: #FF5F56; }
+    .preview-dot-y { background: #FFBD2E; }
+    .preview-dot-g { background: #27C93F; }
+
+    .preview-body {
+      padding: var(--space-8);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .preview-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+    }
+
+    .preview-stat-val {
+      font-size: var(--font-size-xl);
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .preview-stat-lbl {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .preview-chart {
+      grid-column: 1 / -1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      height: 120px;
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      overflow: hidden;
+    }
+
+    .preview-bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      background: var(--gradient-brand);
+      opacity: 0.7;
+      transition: height 0.5s ease;
+    }
+
+    /* ── Testimonials ─────────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+      transition: all var(--transition-base);
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-default);
+    }
+
+    .testimonial-stars {
+      display: flex;
+      gap: 3px;
+      color: var(--brand-warning);
+    }
+
+    .testimonial-text {
+      font-size: var(--font-size-sm);
+      line-height: 1.8;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .testimonial-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: var(--font-size-sm);
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+      font-size: var(--font-size-sm);
+    }
+
+    .testimonial-role {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+    }
+
+    /* ── Stats Section ────────────────────────────────── */
+    .stats-showcase {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-1);
+      background: var(--border-subtle);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .stat-showcase-item {
+      background: var(--bg-surface);
+      padding: var(--space-8);
+      text-align: center;
+    }
+
+    .stat-showcase-value {
+      font-size: var(--font-size-3xl);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-showcase-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      margin-top: var(--space-2);
+    }
+
+    /* ── CTA Section ──────────────────────────────────── */
+    .cta-section {
+      background: var(--gradient-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-16);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(108,92,231,0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+
+    .section-header h2 {
+      font-size: var(--font-size-3xl);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: var(--space-4);
+    }
+
+    .section-header p {
+      font-size: var(--font-size-md);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG Icons -->
+  <div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <svg xmlns="http://www.w3.org/2000/svg"><use href="assets/icons/icons.svg"/></svg>
+  </div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="nav-brand" aria-label="FocusFlow home">
+        <div class="nav-brand-icon" aria-hidden="true">⚡</div>
+        <span class="text-gradient">FocusFlow</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="dashboard.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-dashboard"/></svg>Dashboard</a></li>
+        <li><a href="focus.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-timer"/></svg>Focus</a></li>
+        <li><a href="reports.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-reports"/></svg>Reports</a></li>
+        <li><a href="about.html" class="nav-link" data-nav-link>
+          <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-info"/></svg>About</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme" aria-checked="true" id="themeToggle">
+          <svg width="18" height="18" id="themeIcon"><use href="assets/icons/icons.svg#icon-moon"/></svg>
+        </button>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">Open App</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+    <a href="dashboard.html" class="nav-link" data-nav-link>📊 Dashboard</a>
+    <a href="focus.html" class="nav-link" data-nav-link>⏱️ Focus</a>
+    <a href="reports.html" class="nav-link" data-nav-link>📈 Reports</a>
+    <a href="settings.html" class="nav-link" data-nav-link>⚙️ Settings</a>
+    <a href="about.html" class="nav-link" data-nav-link>ℹ️ About</a>
+    <div class="divider"></div>
+    <a href="dashboard.html" class="btn btn-primary w-full justify-center" style="text-align:center">Open App →</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="hero" aria-label="Hero section">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid-pattern" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-primary" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-accent" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+          AI-Powered Focus Platform
+        </div>
+
+        <h1 class="hero-title">
+          Reclaim your focus.<br />
+          <span class="text-gradient">Own your time.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          FocusFlow combines Pomodoro sessions, habit tracking, and smart AI insights to help you build deep work habits and finally reach your goals.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="dashboard.html" class="btn btn-gradient btn-xl" id="heroCtaBtn">
+            Start for Free
+            <svg width="20" height="20"><use href="assets/icons/icons.svg#icon-arrow-right"/></svg>
+          </a>
+          <a href="focus.html" class="btn btn-outline btn-xl" id="heroFocusBtn">
+            Try Focus Mode
+          </a>
+        </div>
+
+        <div class="hero-social-proof">
+          <div class="avatar-stack" aria-hidden="true">
+            <div class="avatar-stack-item">AK</div>
+            <div class="avatar-stack-item" style="background:var(--gradient-cool)">MJ</div>
+            <div class="avatar-stack-item" style="background:var(--gradient-warm)">SR</div>
+            <div class="avatar-stack-item">PL</div>
+          </div>
+          <p class="social-proof-text">
+            Loved by <strong>12,000+</strong> focused professionals
+          </p>
+          <div class="stat-pill">
+            <span>⭐</span>
+            <span><strong>4.9</strong> avg rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── App Preview ── -->
+  <section class="section-sm" aria-label="App preview">
+    <div class="container">
+      <div class="app-preview" data-animate>
+        <div class="preview-window">
+          <div class="preview-titlebar" aria-hidden="true">
+            <div class="preview-dot preview-dot-r"></div>
+            <div class="preview-dot preview-dot-y"></div>
+            <div class="preview-dot preview-dot-g"></div>
+          </div>
+          <div class="preview-body">
+            <div class="preview-stat">
+              <div class="preview-stat-val">72</div>
+              <div class="preview-stat-lbl">Focus Score</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-val">5.5h</div>
+              <div class="preview-stat-lbl">Screen Time</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-val">3</div>
+              <div class="preview-stat-lbl">Sessions</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-val">🔥7</div>
+              <div class="preview-stat-lbl">Day Streak</div>
+            </div>
+            <div class="preview-chart" aria-label="Weekly focus chart">
+              <div class="preview-bar" style="height:40%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:65%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:55%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:80%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:70%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:90%" aria-hidden="true"></div>
+              <div class="preview-bar" style="height:75%" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats ── -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="stats-showcase" data-animate>
+        <div class="stat-showcase-item">
+          <div class="stat-showcase-value">12K+</div>
+          <div class="stat-showcase-label">Active Users</div>
+        </div>
+        <div class="stat-showcase-item">
+          <div class="stat-showcase-value">2.4M</div>
+          <div class="stat-showcase-label">Sessions Completed</div>
+        </div>
+        <div class="stat-showcase-item">
+          <div class="stat-showcase-value">38%</div>
+          <div class="stat-showcase-label">Avg Productivity Gain</div>
+        </div>
+        <div class="stat-showcase-item">
+          <div class="stat-showcase-value">4.9★</div>
+          <div class="stat-showcase-label">User Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section class="section" aria-label="Features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-animate>Everything you need</div>
+        <h2 data-animate data-animate-delay="100">Built for deep work</h2>
+        <p data-animate data-animate-delay="200">A complete productivity system — not just another timer app.</p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-card" data-animate data-animate-delay="100">
+          <div class="feature-icon" style="background:rgba(108,92,231,0.12)">⏱️</div>
+          <h3 class="feature-title">Pomodoro Timer</h3>
+          <p class="feature-desc">Customizable focus sessions with automatic breaks. Build deep work habits through structured intervals proven by neuroscience.</p>
+        </article>
+        <article class="feature-card" data-animate data-animate-delay="200">
+          <div class="feature-icon" style="background:rgba(0,206,201,0.12)">📊</div>
+          <h3 class="feature-title">Smart Analytics</h3>
+          <p class="feature-desc">Track focus time, session quality, and productivity trends with beautiful Chart.js visualizations updated in real-time.</p>
+        </article>
+        <article class="feature-card" data-animate data-animate-delay="300">
+          <div class="feature-icon" style="background:rgba(253,203,110,0.12)">🔥</div>
+          <h3 class="feature-title">Streak Tracker</h3>
+          <p class="feature-desc">Build consistency with daily streak tracking. Our habit loop mechanics keep you motivated and accountable every day.</p>
+        </article>
+        <article class="feature-card" data-animate data-animate-delay="100">
+          <div class="feature-icon" style="background:rgba(0,184,148,0.12)">🤖</div>
+          <h3 class="feature-title">AI Recommendations</h3>
+          <p class="feature-desc">Personalized insights based on your usage patterns. Get actionable suggestions to optimize your focus sessions.</p>
+        </article>
+        <article class="feature-card" data-animate data-animate-delay="200">
+          <div class="feature-icon" style="background:rgba(116,185,255,0.12)">🎯</div>
+          <h3 class="feature-title">Goal Setting</h3>
+          <p class="feature-desc">Set daily focus goals, track progress, and celebrate wins. Pair goals with category tracking for balanced productivity.</p>
+        </article>
+        <article class="feature-card" data-animate data-animate-delay="300">
+          <div class="feature-icon" style="background:rgba(214,48,49,0.12)">📵</div>
+          <h3 class="feature-title">Screen Time Insights</h3>
+          <p class="feature-desc">Understand your digital habits. See productive vs. unproductive time to make informed decisions about your focus.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How It Works ── -->
+  <section class="section" style="background:var(--bg-surface)" aria-label="How it works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-animate>Simple by design</div>
+        <h2 data-animate data-animate-delay="100">Three steps to deep focus</h2>
+        <p data-animate data-animate-delay="200">No complicated onboarding. Start your first session in under 60 seconds.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card" data-animate data-animate-delay="100">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Set Your Goal</h3>
+          <p class="step-desc">Define your daily focus hours and choose the category that matters most right now — work, study, or personal.</p>
+        </div>
+        <div class="step-card" data-animate data-animate-delay="200">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Start Focusing</h3>
+          <p class="step-desc">Hit start on the Pomodoro timer and let FocusFlow guide you through focus intervals and rejuvenating breaks.</p>
+        </div>
+        <div class="step-card" data-animate data-animate-delay="300">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Review & Improve</h3>
+          <p class="step-desc">Explore your reports, understand your patterns, and apply AI-powered recommendations to level up every week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Testimonials ── -->
+  <section class="section" aria-label="Testimonials">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-animate>Wall of love</div>
+        <h2 data-animate data-animate-delay="100">Trusted by focused people</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <article class="testimonial-card" data-animate data-animate-delay="100">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testimonial-text">"FocusFlow completely transformed how I work. My deep work sessions went from 1 hour to 4+ hours a day within the first week. The streak feature is addictive in the best way."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:var(--gradient-brand)">AK</div>
+            <div>
+              <div class="testimonial-name">Ananya Kumar</div>
+              <div class="testimonial-role">Senior Engineer, Stripe</div>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card" data-animate data-animate-delay="200">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testimonial-text">"I've tried Forest, Freedom, and RescueTime. FocusFlow is the first one that actually gives me data I can act on. The AI recommendations are surprisingly accurate."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:var(--gradient-cool)">MJ</div>
+            <div>
+              <div class="testimonial-name">Marcus Johnson</div>
+              <div class="testimonial-role">Product Designer, Linear</div>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card" data-animate data-animate-delay="300">
+          <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+          <blockquote class="testimonial-text">"As a PhD student, managing screen time and research focus is everything. FocusFlow's analytics helped me reclaim 2+ hours of deep work every day. Remarkable tool."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:var(--gradient-warm)">SR</div>
+            <div>
+              <div class="testimonial-name">Sofia Rodriguez</div>
+              <div class="testimonial-role">PhD Researcher, MIT</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-section" data-animate>
+        <div class="section-label" style="margin:0 auto var(--space-6)">Start today — it's free</div>
+        <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:var(--space-4)">
+          Your most productive year<br /><span class="text-gradient">starts now.</span>
+        </h2>
+        <p style="font-size:var(--font-size-md);color:var(--text-secondary);margin-bottom:var(--space-8);max-width:480px;margin-left:auto;margin-right:auto">
+          Join thousands of professionals who've reclaimed their focus with FocusFlow.
+        </p>
+        <div class="hero-cta-group" style="justify-content:center">
+          <a href="dashboard.html" class="btn btn-gradient btn-xl" id="ctaMainBtn">
+            Get Started Free
+            <svg width="20" height="20"><use href="assets/icons/icons.svg#icon-arrow-right"/></svg>
+          </a>
+          <a href="about.html" class="btn btn-outline btn-xl" id="ctaAboutBtn">Learn More</a>
+        </div>
+        <p class="text-muted text-sm" style="margin-top:var(--space-5)">No credit card required · All data stays on your device</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-brand">
+            <div class="nav-brand-icon">⚡</div>
+            <span class="text-gradient">FocusFlow</span>
+          </a>
+          <p>The modern productivity platform for people who take their focus seriously.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Product</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html" class="footer-link">Dashboard</a></li>
+            <li><a href="focus.html" class="footer-link">Focus Mode</a></li>
+            <li><a href="reports.html" class="footer-link">Reports</a></li>
+            <li><a href="settings.html" class="footer-link">Settings</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html" class="footer-link">About</a></li>
+            <li><a href="about.html#mission" class="footer-link">Mission</a></li>
+            <li><a href="about.html#team" class="footer-link">Team</a></li>
+            <li><a href="about.html#contact" class="footer-link">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Resources</h4>
+          <ul class="footer-links">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="#" class="footer-link">Changelog</a></li>
+            <li><a href="#" class="footer-link">Keyboard Shortcuts</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 FocusFlow. All rights reserved.</span>
+        <span>Built with ❤️ for focused minds</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Animate preview bars on load
+    setTimeout(() => {
+      document.querySelectorAll('.preview-bar').forEach((bar, i) => {
+        const heights = [40,65,55,80,70,90,75];
+        bar.style.height = heights[i] + '%';
+      });
+    }, 500);
+
+    // Theme icon sync
+    const themeIcon = document.getElementById('themeIcon');
+    const updateThemeIcon = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      if (themeIcon) themeIcon.innerHTML = `<use href="assets/icons/icons.svg#icon-${isDark ? 'sun' : 'moon'}"/>`;
+    };
+    updateThemeIcon();
+    new MutationObserver(updateThemeIcon).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  </script>
+</body>
+</html>
